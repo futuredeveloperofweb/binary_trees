@@ -73,6 +73,13 @@ void create_tree(avl_t **node, int *array, size_t size, int mode);
 int binary_tree_is_heap(const binary_tree_t *tree);
 heap_t *array_to_heap(int *array, size_t size);
 int *heap_to_sorted_array(heap_t *heap, size_t *size);
-
+int binary_tree_is_complete(const binary_tree_t *tree);
+binary_tree_t *binary_tree_rotate_right(binary_tree_t *tree);
+bst_t *bst_insert(bst_t **tree, int value);
+bst_t *bst_search(const bst_t *tree, int value);
+avl_t *avl_insert(avl_t **tree, int value);
+avl_t *avl_remove(avl_t *root, int value);
+heap_t *heap_insert(heap_t **root, int value);
+int heap_extract(heap_t **root);
 
 #endif
