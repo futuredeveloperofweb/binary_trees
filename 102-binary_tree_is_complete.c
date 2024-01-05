@@ -2,7 +2,8 @@
 
 levelorder_queue_t *create_queue_node(binary_tree_t *node);
 void free_queue(levelorder_queue_t *head);
-void enqueue(binary_tree_t *node, levelorder_queue_t *head, levelorder_queue_t **tail);
+void enqueue(binary_tree_t *node, levelorder_queue_t *head,
+		levelorder_queue_t **tail);
 void dequeue(levelorder_queue_t **head);
 int binary_tree_is_complete(const binary_tree_t *tree);
 
@@ -15,16 +16,17 @@ int binary_tree_is_complete(const binary_tree_t *tree);
  */
 levelorder_queue_t *create_queue_node(binary_tree_t *node)
 {
-    levelorder_queue_t *new_node;
+	levelorder_queue_t *new_node;
 
-    new_node = malloc(sizeof(levelorder_queue_t));
-    if (new_node == NULL)
-        return (NULL);
+	new_node = malloc(sizeof(levelorder_queue_t));
 
-    new_node->node = node;
-    new_node->next = NULL;
+	if (new_node == NULL)
+		return (NULL);
 
-    return (new_node);
+	new_node->node = node;
+	new_node->next = NULL;
+
+	return (new_node);
 }
 
 /**
@@ -33,14 +35,14 @@ levelorder_queue_t *create_queue_node(binary_tree_t *node)
  */
 void free_queue(levelorder_queue_t *head)
 {
-    levelorder_queue_t *tmp;
+	levelorder_queue_t *tmp;
 
-    while (head != NULL)
-    {
-        tmp = head->next;
-        free(head);
-        head = tmp;
-    }
+	while (head != NULL)
+	{
+		tmp = head->next;
+		free(head);
+		head = tmp;
+	}
 }
 
 /**
@@ -51,18 +53,20 @@ void free_queue(levelorder_queue_t *head)
  *
  * Description: Exits with a status code of 1 on malloc failure.
  */
-void enqueue(binary_tree_t *node, levelorder_queue_t *head, levelorder_queue_t **tail)
+void enqueue(binary_tree_t *node, levelorder_queue_t *head,
+		levelorder_queue_t **tail)
 {
-    levelorder_queue_t *new_node;
+	levelorder_queue_t *new_node;
 
-    new_node = create_queue_node(node);
-    if (new_node == NULL)
-    {
-        free_queue(head);
-        exit(1);
-    }
-    (*tail)->next = new_node;
-    *tail = new_node;
+	new_node = create_queue_node(node);
+
+	if (new_node == NULL)
+	{
+		free_queue(head);
+		exit(1);
+	}
+	(*tail)->next = new_node;
+	*tail = new_node;
 }
 
 /**
@@ -71,11 +75,11 @@ void enqueue(binary_tree_t *node, levelorder_queue_t *head, levelorder_queue_t *
  */
 void dequeue(levelorder_queue_t **head)
 {
-    levelorder_queue_t *tmp;
+	levelorder_queue_t *tmp;
 
-    tmp = (*head)->next;
-    free(*head);
-    *head = tmp;
+	tmp = (*head)->next;
+	free(*head);
+	*head = tmp;
 }
 
 /**
@@ -89,41 +93,42 @@ void dequeue(levelorder_queue_t **head)
  */
 int binary_tree_is_complete(const binary_tree_t *tree)
 {
-    levelorder_queue_t *head, *tail;
-    unsigned char flag = 0;
+	levelorder_queue_t *head, *tail;
+	unsigned char flag = 0;
 
-    if (tree == NULL)
-        return (0);
+	if (tree == NULL)
+		return (0);
 
-    head = tail = create_queue_node((binary_tree_t *)tree);
-    if (head == NULL)
-        exit(1);
+	head = tail = create_queue_node((binary_tree_t *)tree);
 
-    while (head != NULL)
-    {
-        if (head->node->left != NULL)
-        {
-            if (flag == 1)
-            {
-                free_queue(head);
-                return (0);
-            }
-            enqueue(head->node->left, head, &tail);
-        }
-        else
-            flag = 1;
-        if (head->node->right != NULL)
-        {
-            if (flag == 1)
-            {
-                free_queue(head);
-                return (0);
-            }
-            enqueue(head->node->right, head, &tail);
-        }
-        else
-            flag = 1;
-        dequeue(&head);
-    }
-    return (1);
+	if (head == NULL)
+		exit(1);
+
+	while (head != NULL)
+	{
+		if (head->node->left != NULL)
+		{
+			if (flag == 1)
+			{
+				free_queue(head);
+				return (0);
+			}
+			enqueue(head->node->left, head, &tail);
+		}
+		else
+			flag = 1;
+		if (head->node->right != NULL)
+		{
+			if (flag == 1)
+			{
+				free_queue(head);
+				return (0);
+			}
+			enqueue(head->node->right, head, &tail);
+		}
+		else
+			flag = 1;
+		dequeue(&head);
+	}
+	return (1);
 }
